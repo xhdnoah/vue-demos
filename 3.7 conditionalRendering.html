@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Conditional Rendering</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<!-- v-if 对 DOM 添加或删除元素-->
+		<div v-if="show">{{message}}</div>
+		<!-- v-if、v-else 必须紧贴使用-->
+		<div v-else>Bye World</div>
+
+		<div v-if="show === 'a'">This is A</div>
+		<div v-else-if="show === 'b'">This is B</div>
+		<div v-else>Else</div>
+		
+		<!-- v-show 对 message 添加 display:none-->
+		<div v-show="show">{{message}}</div>
+
+		<div v-if="show">username: <input key="username"></div>
+		<div v-else>mail: <input key="mail"></div>
+	</div>
+	<script>
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				show:false,
+				message:"Hello World"
+			}
+		})
+	</script>
+</body>
+</html>

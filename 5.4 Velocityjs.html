@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue中的JS动画与Velocity.js</title>
+	<script src='./vue.js'></script>
+	<script src='./velocity.js'></script>
+</head>
+<body>
+	<div id="root">
+		<!-- js提供的动画钩子:before-enter,enter -->
+		<transition 
+			name="fade"
+			@before-enter="handleBeforeEnter"
+			@enter="handleEnter"
+			@after-enter="handleAfterEnter"
+		>
+		<div v-show="show">Hello World</div>
+		</transition>
+		<button @click="handleClick">Toggle</button>
+	</div>
+
+	<script>
+		var vm = new Vue({
+			el:'#root',
+			data:{
+				show:true
+			},
+			methods:{
+				handleClick:function(){
+					this.show = !this.show
+				},
+				// el指的是transition包裹的div标签
+				handleBeforeEnter:function(el){
+					// el.style.color = 'red'
+					el.style.opacity = 0;
+				},
+				handleEnter:function(el,done){
+					// setTimeout(()=>{
+					// 	el.style.color = 'green'
+					// },2000)
+					// // done() 标志动画结束
+					// setTimeout(()=> {
+					// 	done()
+					// },4000)
+
+					// 动画结束，complete内的函数会被执行
+					Velocity(el,{opacity:1},{duration:1000,complete:done})
+				},
+				handleAfterEnter:function(el){
+					// el.style.color = '#000';
+					console.log("Animation ended.")
+				}
+			}
+		})
+	</script>
+</body>
+</html>

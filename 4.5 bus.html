@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>非父子组件间传值(Bus总线/发布订阅模式/观察者模式</title>
+	<script src='./vue.js'></script>
+</head>
+<body>
+	<div id="root">
+		<!-- 实现点击其中一个组件，其他组件会改为这个组件的值 -->
+		<child content="A"></child>
+		<child content="B"></child>
+		<child content="C"></child>
+	</div>
+
+	<script>
+		// 通过在Vue原型上创建实例，之后每一个组件都拥有bus这个属性
+		Vue.prototype.bus = new Vue()
+
+		Vue.component('child',{
+			data:function(){
+				return{
+					selfContent: this.content
+				}
+			},
+			props:{
+				content:String
+			},
+			template:'<div @click="handleClick">{{selfContent}}</div>',
+			methods:{
+				handleClick:function(){
+					this.bus.$emit('change',this.content)
+				}
+			},
+			// 组件被挂载时的lifecycle hook
+			mounted:function() {
+				var this_ = this
+				this.bus.$on('change',function(msg){
+					this_.selfContent = msg
+				})
+			}
+		})
+
+		var vm = new Vue({
+			el:'#root'
+		})
+	</script>
+</body>
+</html>

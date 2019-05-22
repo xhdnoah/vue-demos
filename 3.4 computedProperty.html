@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Computed Properties and Watchers</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		{{fullName}}
+		{{age}}
+	</div>
+	<script>
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				firstName:"Noah",
+				lastName:"Xu",
+				age:23
+			},
+			//Computed Properties 计算属性内置缓存
+			computed:{
+				fullName:function(){
+					console.log("computed once.")
+					return this.firstName+" "+this.lastName
+				}
+			},
+			watch:{
+				firstName:function(){
+					console.log("computed once.");
+					this.fullName = this.firstName+" "+this.lastName;
+				},
+				lastName:function(){
+					console.log("computed once.");
+					this.fullName = this.firstName+" "+this.lastName;
+				}
+			}
+		})
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue中的CSS（过渡）动画原理</title>
+	<script src='./vue.js'></script>
+	<style>
+		/*Vue动画原理
+		从隐藏到显示：
+		第一帧：fade-enter,fade-enter-active同时存在
+		第二帧：fade-enter被移除触发opacity:0->1的变化，添加fade-enter-to
+		3s的过渡
+		最后一帧：fade-enter-active,fade-enter-to被移除
+		从显示到隐藏：
+		第一帧：fade-leave,fade-leave-active同时存在
+		第二帧：fade-leave被移除,添加fade-leave-to触发opacity：1->0的变化
+		3s的过渡
+		最后一帧：fade-leave-active,fade-leave-to被移除
+		*/
+		.fade-enter,.fade-leave-to{
+			opacity:0;
+		}
+		.fade-enter-active,.fade-leave-active{
+			/*对opacity进行transition的监控，opacity发生变化的时间延至3s*/
+			transition: opacity 3s;
+		}
+	</style>
+</head>
+<body>
+	<div id="root">
+		<!-- Vue分析被transition标签包裹的元素的CSS样式，然后构建动画流程 -->
+		<transition name="fade">
+		<!-- or v-if="show"	 -->
+		<div v-show="show">Hello World</div>
+		</transition>
+		<button @click="handleClick">切换</button>
+	</div>
+
+	<script>
+		var vm = new Vue({
+			el:'#root',
+			data:{
+				show:true
+			},
+			methods:{
+				handleClick:function(){
+					this.show = !this.show
+				}
+			}
+		})
+	</script>
+</body>
+</html>

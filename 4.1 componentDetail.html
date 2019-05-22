@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>组件使用的细节点</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<div id="root">
+		<table>
+			<tbody>
+				<!-- row标签在浏览器内解析会出错，通过 is 属性解决组件问题-->
+				<tr is="row"></tr>
+				<tr is="row"></tr>
+				<tr is="row"></tr>
+			</tbody>
+		</table>
+		<!-- ref is used to register a reference to an element or a child component,the reference will be registered under the parent component's $refs object.-->
+		<div ref='hello' @click="handleClick">hello world</div>
+
+		<counter ref="one" @change="handleChange"></counter>
+		<counter ref="two" @change="handleChange"></counter>
+		<div>{{total}}</div>
+	</div>
+	<script>
+		// 被频繁调用的子组件内的 data 必须是一个函数，保证每个子组件的数据是独立的
+		Vue.component('row',{
+			data:function(){
+				return{
+					content:'this is content'
+				}
+			},
+			template:'<tr><td>{{content}}</td></tr>'
+		})
+
+		Vue.component('counter',{
+			template:'<div @click="handleClick">{{number}}</div>',
+			data:function(){
+				return{
+					number:0
+				}
+			},
+			methods:{
+				handleClick:function(){
+					this.number++
+					this.$emit('change')
+				}
+			}
+		})
+
+		var vm = new Vue({
+			el:'#root',
+			data:{
+				total:0
+			},
+			methods:{
+				handleClick:function(){
+					alert(this.$refs.hello.innerHTML)
+				},
+				handleChange:function(){
+					// vm.$refs : an object of DOM elements and component instances,registered with ref attributes.
+					this.total=this.$refs.one.number + this.$refs.two.number
+				}
+			}
+		})
+	</script>
+</body>
+</html>

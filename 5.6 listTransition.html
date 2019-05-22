@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue中的列表过渡</title>
+	<script src='./vue.js'></script>
+	<style>
+		.v-enter,.v-leave-to{
+			opacity:0;
+		}
+		.v-enter-active,.v-leave-active{
+			transition: opacity 1s;
+		}
+	</style>
+	</head>
+<body>
+	 <div id="root">
+	 	<!-- transition-group标签的作用相当于在每一个列表项外层包裹transition标签 -->
+	 	<transition-group>
+	 	<!-- 不建议用index作为key值 -->
+	 	<div v-for="(item,id) in list" :key="id">
+	 		{{item.title}}
+	 	</div>
+	 	</transition-group>
+	 	<button @click="handleBtnClick">Add</button>
+	 </div>
+
+	 <script>
+	 	var count = 0;
+	 	var vm = new Vue({
+	 		el:'#root',
+	 		data:{
+	 			list:[]
+	 		},
+	 		methods:{
+	 			handleBtnClick:function(){
+	 				this.list.push({
+	 					id:count++,
+	 					title:'hello world'
+	 				})
+	 			}
+	 		}
+	 	})
+	 </script>
+</body>
+</html>

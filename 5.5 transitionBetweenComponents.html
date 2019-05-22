@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue中多个元素或组件的过渡</title>
+	<script src='./vue.js'></script>
+	<style>
+		.v-enter,.v-leave-to{
+			opacity: 0;
+		}
+		.v-enter-active,.v-leave-active{
+			transition: opacity 1s;
+		}
+	</style>
+</head>
+<body>
+	<div id="root">
+		<transition mode="out-in">
+			<!-- 使用动态组件实现多组件的过渡,通过is绑定的值控制组件的显示 -->
+			<component :is="type"></component>
+			<!-- transition包裹两个元素，Vue在元素间切换时尽量复用DOM，动画效果不显示，我们给每个元素添加key属性避免DOM复用，实现多元素的过渡-->
+			<!-- <div v-if="show" key="hello">Hello World</div>
+			<div v-else key="bye">Bye World</div> -->
+		</transition>
+		<button @click="handleClick">toggle</button>
+	</div>
+
+	<script>
+
+		Vue.component('child',{
+			template:'<div>child</div>'
+		})
+
+		Vue.component('child-one',{
+			template:'<div>child-one</div>'
+		})
+	
+		var vm = new Vue({
+			el:"#root",
+			// data:{
+			// 	show:true
+			// },
+			data:{
+				type : 'child'
+			},
+			methods:{
+				handleClick:function(){
+					this.type = this.type === 'child' ? 'child-one' :'child';
+				}
+			}
+		})
+	</script>
+</body>
+</html>

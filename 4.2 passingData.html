@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>父子组件传值</title>
+	<script src='./vue.js'></script>
+</head>
+<body>
+	<div id="root">
+		<!-- 父组件调用子组件，绑定子组件的属性值，监听子组件的事件-->
+		<counter :count="1" @inc="handleIncrease"></counter>
+		<counter :count="2" @inc="handleIncrease"></counter>
+		<div>{{total}}</div>
+	</div>
+
+	<script>
+		var counter = {
+			// 父组件通过属性 props 向子组件传值（单向数据流）
+			// 子组件不能直接反向改变父组件的传值
+			props:['count'],
+			data:function(){
+				return{
+					// 可以通过拷贝一份副本来改变其值
+					number:this.count
+				}
+			},
+			template:'<div @click="handleClick">{{number}}</div>',
+			methods:{
+				handleClick:function(){
+					this.number+=2
+					// 子组件通过散发事件向父组件传值
+					this.$emit('inc',2)
+				}
+			}
+		}
+
+		var vm = new Vue({
+			el:'#root',
+			data:{
+				total:3
+			},
+			//在父组件的 components 中注册局部组件
+			components:{
+				counter:counter
+			},
+			methods:{
+				// 处理事件接受子组件事件inc的参数：步长‘2’
+				handleIncrease:function(step){
+					this.total += step
+				}
+			}
+		})
+	</script>
+</body>
+</html>

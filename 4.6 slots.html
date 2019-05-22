@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>插槽</title>
+	<script src='./vue.js'></script>
+</head>
+
+<body>
+	<div id="root">
+		<body-content>
+			<!-- 使用插槽语法，DOM 可以更清晰地向子组件传递内容 -->
+			<div class="header" slot="header">header</div>
+			<div class="footer" slot="footer">footer</div>
+		</body-content>
+	</div>
+
+	<script>
+		Vue.component('body-content', {
+			// 当子组件的部分内容是根据父组件传递的 DOM 进行显示的时候，可以使用slot
+			template: `<div>
+						<slot name="header"></slot>
+						<p>Hello World</p>
+						<slot name="footer"></slot>
+					  </div>`
+		})
+
+		var vm = new Vue({
+			el: '#root'
+		})
+	</script>
+</body>
+
+</html>

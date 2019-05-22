@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>List Rendering</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<!-- 列表循环 -->
+		<div v-for="(item,index) in list" 
+			 :key="item.id">
+			{{item}}---{{index}}
+		</div>
+		<!-- 对象循环 -->
+		<div v-for="(item,key,index) in userInfo">
+			{{item}}---{{key}}---{{index}}
+		</div>
+	</div>
+	<script>
+		// Vue 不能通过数组下标直接渲染列表，需要通过变异方法：push，pop，shift，ubshift,splice,sort,reverse
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				list:["hello","noah","nice","to","meet","you"],
+				userInfo:{
+					name:"Noah",
+					age:23,
+					gender:"male",
+					salary:"secret"
+				}
+			}
+		})
+		//改变数组内容直接渲染页面的第二种方式是改变数组（引用类型）的引用，生成一个新的数组
+		//还可以直接用 Vue.set(vm.userInfo,"address","nanjing") 改变对象内容同时渲染
+		//或者实例方法 vm.$set
+	</script>
+</body>
+</html>
